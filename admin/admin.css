@@ -1,0 +1,425 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+/* Some classes */
+
+.btn {
+    height: 40px;
+    width: 142px;
+    background-color: #ffffff00;
+    border-radius: 2px;
+    border: 2px #2fc38f solid;
+    font-size: 17px;
+    color: #2fc38f;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #2fc38f;
+    color: white !important;
+}
+
+.btn-red {
+    border: 2px red solid;
+    color: red;
+    text-align: center;
+}
+
+.btn-red:hover {
+    background-color: red;
+}
+
+.body-clr {
+    background-color: #DAF1E4 !important;
+    overflow-x: hidden !important;
+}
+
+.center-Items {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-photo {
+    background-color: #ff6b67;
+    color: #fff;
+    border: 2px solid #ff6b67;
+    margin-left: 0% !important;
+    margin-bottom: 7px !important;
+    align-self: center;
+    width: auto;
+    padding: 0% 3%;
+}
+.btn-photo:hover {
+    background-color: #ff6b00;
+}
+
+
+/* for modal  */
+
+.myModal {
+    height: 100vh;
+    width: 100%;
+    background-color: #00000033;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+}
+
+.modal-form {
+    padding: 8px 10px 20px 20px !important;
+}
+
+.crossImgContain {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+.crossImgContain img {
+    margin: 0 !important;
+}
+
+
+/* Styling for admin login  */
+
+.container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: #38658b;
+    justify-content: center;
+    align-items: center;
+}
+
+.adminLog {
+    background-color: #fff;
+    height: fit-content;
+    padding: 2% 0.4%;
+    width: 270px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.adminLogHead {
+    font-family: sans-serif;
+    align-self: center;
+}
+
+.adminLog label {
+    font-family: sans-serif;
+    margin: 15px 0px 2px 14px;
+}
+
+.topLabel {
+    margin-top: 24px;
+}
+
+.adminLog input {
+    font-family: sans-serif;
+    margin: 4px 20px 0px 14px;
+    height: 35px;
+    padding-left: 5px;
+    border: 2px groove #ffffff00;
+    border-radius: 2px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.adminLog input:focus {
+    outline: none;
+    border: 2px solid #007bff;
+}
+
+.submit-btn {
+    align-self: center;
+    margin-top: 25px;
+    font-family: sans-serif;
+    color: #2fc38f;
+    cursor: pointer;
+}
+
+/* Css for admin nav  */
+
+.nav {
+    background-color: #00A3BF;
+    list-style: none;
+    width: 200px;
+    height: 100vh;
+    transition: 0.3s ease-in-out;
+    align-items: center;
+    line-height: 40px;
+    z-index: 1;
+}
+
+.box {
+    display: flex;
+    position: fixed;
+    z-index: 6;
+}
+
+.prItems {
+    list-style: none;
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    font-family: sans-serif;
+    width: 200px;
+    display: inline-block;
+    text-align: center;
+}
+
+.prItems:hover {
+    background-color: #FFC300;
+}
+
+
+#hamburger {
+    margin: 6px;
+    height: 30px;
+    background-color: #fff;
+    border-radius: 2px;
+    border: 2px groove #ffffff00;
+    cursor: pointer;
+    position: fixed;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    z-index: 4;
+}
+
+#hamburger:hover {
+    transform: translate(0%,-2%);
+}
+
+#cross {
+    margin: 6px 0px 0px 158px;
+    height: 30px;
+    background-color: #fff;
+    border-radius: 2px;
+    border: 2px groove #ffffff00;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+#cross:hover {
+    transform: translate(0%,-2%);
+}
+
+.subCats {
+    position: fixed;
+    right: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-family: sans-serif;
+    background-color: #00A3BF;
+    margin: 6px 0px 0px 60px;
+    border: 2px #00A3BF solid;
+    color: #fff;
+    width: 100px;
+}
+
+.subCats:hover {
+    background-color: #00a2bf00;
+    color: #00A3BF !important;
+}
+
+.addCat {
+    right: 122px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Css for categories page */
+
+.catHeadContain {
+    height: 20vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.catHeading {
+    background-color: white;
+    border: 1px groove;
+    box-shadow: 1px 1px rgba(0, 0, 0, 0.475);
+    height: 92px;
+    width: 400px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 110px;
+    /* margin-bottom: 40px; */
+}
+
+.catHeading h2 {
+    font-family: sans-serif;
+}
+
+/* Css for main Categories */
+
+.mainCatContain {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+.mainCat {
+    width: 85%;
+    overflow: auto;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+table {
+    border: 1px groove;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.475) 1px 1px;
+}
+
+td, th {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.t-center {
+    text-align: center;
+}
+
+.action-btn {
+    width: fit-content;
+    margin-right: 6px;
+    height: 30px;
+    margin-top: 3px;
+    border-radius: 2px;
+    padding: 0% 1%;
+    text-decoration: none;
+}
+
+.selection {
+    height: 30px;
+    border: 2px groove;
+    border-radius: 2px;
+    padding: 0px 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.selection:focus {
+    outline: none;
+    border: 2px solid #007bff;
+}
+
+#selProduct {
+    align-self: flex-end;
+}
+
+.addBtn {
+    border: 2px #007bff solid;
+    color: #007bff !important;
+    align-self: center;
+}
+
+.addBtn:hover {
+    background-color: #007bff;
+}
+
+/* styling for add categories page  */
+
+.notify {
+    margin: 3% 0% 1% 6%;
+    color: #6a5203;
+}
+
+.notify-photo {
+    margin: 2% 0%;
+    align-self: center;
+}
+
+.photo-select {
+    position: absolute;
+    transition: 0.5s ease;
+    margin: 10px 0px 0px 12px;
+    right: 20px;
+    height: 0px;
+}   
+
+.slPhotoContain {
+    position: relative;
+}
+
+textarea {
+    font-family: sans-serif;
+    margin: 4px 20px 0px 14px;
+    height: 35px;
+    padding-left: 5px;
+    border: 2px groove #ffffff00;
+    border-radius: 2px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    padding: 2% 3%;
+}
+
+textarea:focus {
+    outline: none;
+    border: 2px solid #007bff;
+}
+
+.f-column {
+    flex-direction: column !important;
+}
+
+.prImages {
+    height: fit-content !important;
+    border: 2px solid #5e720f !important;
+    padding: 4% 0%;
+    margin: 3% 0% 8% 0%!important;
+}
+
+.prImages:focus {
+    border: 2px solid #007bff !important;
+}
+
+.no-align {
+    align-items: flex-start;
+}
+
+.cat-red-btn {
+    padding: 0% 2% !important;
+}
+
+/* css for order detail page  */
+
+.f-size {
+    font-size: 18px;
+    padding: 0px 6px;
+}
+
+#sel-status {
+    width: 240%;
+    height: 40px;
+    margin-top: 14px;
+}
+
+@media only screen and (max-width:480px) {
+    .f-size {
+        font-size: 15px;
+    }
+    #sel-status {
+        width: 190%;
+    }
+}
+
+@media only screen and (max-width:340px) {
+    #sel-status {
+        width: 130%;
+    }
+}
