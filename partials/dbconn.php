@@ -21,7 +21,7 @@ if (file_exists($envFilePath)) {
 $host = getenv('DB_HOST');
 $name = getenv('USER');
 $password = getenv("DB_PASS");
-$database = "e-commerce";
+$database = getenv("DB_NAME");
 
 $conn = mysqli_connect($host,$name,$password,$database);
 
