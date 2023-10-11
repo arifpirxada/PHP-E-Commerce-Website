@@ -112,6 +112,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                         die("sorry some technical issue occured");
                     }
                     $product = mysqli_fetch_assoc($getProduct);
+                    if (!$product) {
+                        die("Failed to get products!");
+                    }
                     $product_img = $product['pr_fimage'];
                     $name = $product['pr_name'];
                     $desc = $product['pr_short_desc'];

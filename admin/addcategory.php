@@ -32,27 +32,31 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                     $catName = safe_value($conn, $_POST['catName']);
                     $startPrice = safe_value($conn, $_POST['catStartPrice']);
 
-                    $factname = $catName . "." . $photoExt;
+                    $fileNam = stripslashes($_POST['catName']);
+                    $fileNam = str_replace('"', '', $fileNam);
+                    $fileNam = str_replace("'", '', $fileNam);
+                    $factname = $fileNam . "." . $photoExt;
                     $fpath = '../img/mainCatImages/' . $factname;
-                    move_uploaded_file($photoTmp, $fpath);
+                    
+                    if (move_uploaded_file($photoTmp, $fpath)) {
+                        $exists = mysqli_query($conn, "SELECT * FROM main_categories WHERE m_name = '$catName'");
+                        $num = mysqli_num_rows($exists);
 
-                    $exists = mysqli_query($conn, "SELECT * FROM main_categories WHERE m_name = '$catName'");
-                    $num = mysqli_num_rows($exists);
-
-                    if ($num > 0) {
-                        global $catExists;
-                        $catExists = true;
-                    } else {
-
-                        $sql = "INSERT INTO main_categories (m_name, m_img, m_start_price, m_status) VALUES ('$catName','$factname', '$startPrice',1)";
-                        $result = mysqli_query($conn, $sql);
-                        if (!$result) {
+                        if ($num > 0) {
+                            global $catExists;
+                            $catExists = true;
+                        } else {
+                            $sql = "INSERT INTO main_categories (m_name, m_img, m_start_price, m_status) VALUES ('$catName','$factname', '$startPrice',1)";
+                            $result = mysqli_query($conn, $sql);
+                            if (!$result) {
                             $insertfail = "Sorry category insertion failed!";
+                            }
+                            global $success;
+                            $success = true;
                         }
-
-                        global $success;
-                        $success = true;
-                    }
+                    } else {
+                        echo "Error while uploading file!";
+                    }               
                 } else {
                     global $bigSize;
                     $bigSize = true;

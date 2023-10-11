@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             <label for="adminEmail">Email</label>
             <input required id="adminEmail" name="adminEmail" type="text" placeholder="Email">
             <label for="adminPassword">Password</label>
-            <input required style="margin-bottom: 7%;" id="adminPassword" name="adminPassword" type="Password" placeholder="Email">
+            <input required style="margin-bottom: 7%;" id="adminPassword" name="adminPassword" type="Password" placeholder="Password">
 
             <button class="btn addBtn" type="submit">Add</button>
 
