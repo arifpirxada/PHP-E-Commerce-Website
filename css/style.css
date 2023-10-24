@@ -278,12 +278,11 @@ main {
 /* css for Main category */
 
 .mainCategories {
-    width: 95%;
-    margin: 0% 0% 1% 2.5%;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     flex-wrap: wrap;
-    padding: 3% 0%;
+    max-width: 100vw !important;
+    padding: 2rem 1rem;
 }
 
 .mainCategories a {
@@ -292,12 +291,17 @@ main {
 
 .mainCat {
     width: 16vw;
-    padding: 2vw 0vw;
+    padding: 2vw 0.8vw;
     color: #fff;
     margin: 2px;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     border: 2px groove #ffffff85;
+    transition: all 0.5s ease;
+}
+
+.mainCat:hover {
+    border: 2px solid red;
 }
 
 .cartImg {
@@ -306,10 +310,10 @@ main {
     transition: 0.3s ease;
 }
 
-.cartImg:hover {
+/* .cartImg:hover {
     transform: translate(0px, -10px);
     box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-}
+} */
 
 @media only screen and (max-width: 750px) {
     .mainCat {
@@ -322,7 +326,7 @@ main {
     }
 
     .footcats a {
-        font-size: 2vw !important;
+        font-size: 14px !important;
     }
 }
 
@@ -347,22 +351,33 @@ main {
 
 .mainCatType {
     margin-top: 5%;
-    font-size: 1vw;
+    font-size: 14px;
     color: #000000;
+    text-align: center;
 }
 
 .mainCatDesc {
     margin-top: 2%;
-    font-size: 1vw;
-    color: #000000b0;
+    font-size: 14px;
+    color: #343131;
     text-align: center;
     padding: 0% 6%;
+    text-align: center;
 }
 
 .mainCatPrice {
     margin-top: 2%;
-    font-size: 1vw;
-    color: #000000;
+    font-size: 14px;
+    color: darkred;
+    text-align: center;
+}
+
+.dimGray {
+    color: darkslategray !important;
+}
+
+.d-inline {
+    display: inline !important;
 }
 
 /* Footer css  */
@@ -394,7 +409,7 @@ main {
 .footcats a {
     color: white;
     margin: 0.3vh 0vh;
-    font-size: 1vw;
+    font-size: 14px;
 }
 
 .footcats a:hover {
@@ -680,7 +695,7 @@ main {
 }
 
 .productDesc p {
-    color: black;
+    color: #363030;
     margin-bottom: 3%;
 }
 
@@ -728,6 +743,7 @@ main {
 
 .productLongDesc p {
     padding: 0% 4%;
+    color: #363030;
 }
 
 .relatedProducts {

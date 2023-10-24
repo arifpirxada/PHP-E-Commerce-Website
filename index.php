@@ -142,7 +142,7 @@ if (!$notLogedIn) {
                         <div class="mainCat d-flex">
                             <img class="cartImg" src="img/mainCatImages/<?php echo $row['m_img'] ?>" alt="">
                             <p class="mainCatType"><?php echo $row['m_name'] ?></p>
-                            <p class="mainCatPrice">Starting: ₹<?php echo $row['m_start_price'] ?></p>
+                            <div class="mainCatPrice"><p class="dimGray d-inline">Starting:</p> ₹<?php echo $row['m_start_price'] ?></div>
                         </div>
                     </a>
 
@@ -168,7 +168,7 @@ if (!$notLogedIn) {
                         <div class="mainCat d-flex">
                             <img class="cartImg" src="img/subCatImages/<?php echo $row['s_img'] ?>" alt="">
                             <p class="mainCatType"><?php echo $row['s_name'] ?></p>
-                            <p class="mainCatPrice">Starting: ₹<?php echo $row['s_start_price'] ?></p>
+                            <div class="mainCatPrice"><p class="dimGray d-inline">Starting:</p> ₹<?php echo $row['s_start_price'] ?></div>
                         </div>
                     </a>
 
