@@ -32,10 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $addUserFail = true;
         } else {
             $_SESSION['userLog'] = true;
-            $_SESSION['user'] = $userName;
+            $_SESSION['user'] = $userEmail;
 
-
-            header("location: handles/user_email_verify.php");
+            header("location: index.php");
         }
     }
 }

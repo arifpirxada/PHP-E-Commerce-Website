@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $wrPass = true;
         } else {
             $_SESSION['userLog'] = true;
-            $_SESSION['user'] = $email;
+            $_SESSION['user'] = $row["u_email"];
             header("location: index.php");
         }
     }
