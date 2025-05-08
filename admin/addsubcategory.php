@@ -32,26 +32,32 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                     $catName = safe_value($conn, $_POST['subCatName']);
                     $startPrice = safe_value($conn, $_POST['subCatStartPrice']);
 
-                    $factname = $catName . "." . $photoExt;
+                    $fileNam = stripslashes($_POST['subCatName']);
+                    $fileNam = str_replace('"', '', $fileNam);
+                    $fileNam = str_replace("'", '', $fileNam);
+                    $factname = $fileNam . "." . $photoExt;
                     $fpath = '../img/subCatImages/' . $factname;
-                    move_uploaded_file($photoTmp, $fpath);
 
-                    $exists = mysqli_query($conn, "SELECT * FROM sub_categories WHERE s_name = '$catName'");
-                    $num = mysqli_num_rows($exists);
+                    if (move_uploaded_file($photoTmp, $fpath)) {
+                        $exists = mysqli_query($conn, "SELECT * FROM sub_categories WHERE s_name = '$catName'");
+                        $num = mysqli_num_rows($exists);
 
-                    if ($num > 0) {
-                        global $catExists;
-                        $catExists = true;
-                    } else {
+                        if ($num > 0) {
+                            global $catExists;
+                            $catExists = true;
+                        } else {
 
-                        $sql = "INSERT INTO sub_categories (s_name, s_img, s_start_price, s_status) VALUES ('$catName','$factname','$startPrice',1)";
-                        $result = mysqli_query($conn, $sql);
-                        if (!$result) {
-                            $insertfail = "Sorry category insertion failed!";
+                            $sql = "INSERT INTO sub_categories (s_name, s_img, s_start_price, s_status) VALUES ('$catName','$factname','$startPrice',1)";
+                            $result = mysqli_query($conn, $sql);
+                            if (!$result) {
+                                $insertfail = "Sorry category insertion failed!";
+                            }
+
+                            global $success;
+                            $success = true;
                         }
-
-                        global $success;
-                        $success = true;
+                    } else {
+                        echo("failed to upload photo");
                     }
                 } else {
                     global $bigSize;

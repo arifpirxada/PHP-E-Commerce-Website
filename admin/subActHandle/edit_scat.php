@@ -41,23 +41,31 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                         echo "selection was not possible, try later";
                         die();
                     }
-                    global $setName;
-                    $factname = $setName . "." . $photoExt;
-                    $fpath = '../../img/subCatImages/' . $factname;
-                    move_uploaded_file($photoTmp, $fpath);
-                    $row = mysqli_fetch_assoc($getImg);
-                    $img = $row['s_img'];
-                    $updateCat = mysqli_query($conn, "UPDATE `sub_categories` SET `s_name` = '$setName', `s_img` = '$factname' WHERE `sub_categories`.`s_id` = $cat_id");
-                    if (!$updateCat) {
-                        $update = true;
-                    }else {
-                        global $success;
-                        $success = true;
-                    }
-                    if (unlink('../../img/subCatImages/' . $img)) {
+                    $fileNam = stripslashes($_POST['updateSubCatName']);
+                    $fileNam = str_replace('"', '', $fileNam);
+                    $fileNam = str_replace("'", '', $fileNam);
 
+                    $factname = $fileNam . "." . $photoExt;
+                    $fpath = '../../img/subCatImages/' . $factname;
+
+                    if (move_uploaded_file($photoTmp, $fpath)) {
+
+                        $row = mysqli_fetch_assoc($getImg);
+                        $img = $row['s_img'];
+                        $updateCat = mysqli_query($conn, "UPDATE `sub_categories` SET `s_name` = '$setName', `s_img` = '$factname' WHERE `sub_categories`.`s_id` = $cat_id");
+                        if (!$updateCat) {
+                            $update = true;
+                        }else {
+                            global $success;
+                            $success = true;
+                        }
+                        if (unlink('../../img/subCatImages/' . $img)) {
+    
+                        } else {
+                            $imgDel = true;
+                        }
                     } else {
-                        $imgDel = true;
+                        echo("Failed to upload Image");
                     }
                 } else {
                     global $bigSize;
@@ -118,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         <a class="btn subCats addCat" id="addCategories" href="../addcategory.php">Add</a>
         <ul class="nav">
             <li><img id="cross" onclick="go()" src="../../img/Cross.png" alt=""></li>
-            <li><a class="prItems" style="background-color: #FFC300 !important;" id="categories" href="../categories.php">Categories</a></li>
+            <li><a class="prItems" style="background-color: #FFC300 !important;" id="categories" href="../index.php">Categories</a></li>
             <li><a class="prItems" id="products" href="../products.php">Products</a></li>
             <li><a class="prItems" id="order" href="../Order.php">Orders</a></li>
             <li><a class="prItems" id="users" href="../users.php">Users</a></li>

@@ -44,8 +44,7 @@ include "../partials/add_to_cart_func.php";
             <h2 style="font-weight: 100;">
 
                 <?php
-                $currentUser = $_SESSION['user'];
-                $getOrder = mysqli_query($conn, "SELECT * FROM e_order WHERE o_user_email = '$currentUser'");
+                $getOrder = mysqli_query($conn, "SELECT * FROM e_order");
 
                 if (!$getOrder) {
                     die('some technical issue occured, please try later!');
@@ -63,8 +62,7 @@ include "../partials/add_to_cart_func.php";
             <?php
 
             // Getting user orders
-            $currentUser = $_SESSION['user'];
-            $getOrder = mysqli_query($conn, "SELECT * FROM e_order WHERE o_user_email = '$currentUser' order by o_id desc");
+            $getOrder = mysqli_query($conn, "SELECT * FROM e_order order by o_id desc");
 
             if (!$getOrder) {
                 echo "technical issue while fetching main categories";

@@ -2,6 +2,7 @@
 include "partials/dbconn.php";
 include "partials/chk_user_log.php";
 include "partials/add_to_cart_func.php";
+include "partials/instamojoCredentials.php";
 
 if ($notLogedIn) {
     header("location: login.php");
@@ -9,6 +10,7 @@ if ($notLogedIn) {
 
 $insertFail = false;
 $total_price = 0;
+$order_id = null;
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
     // to get total price
@@ -41,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     global $total_price;
     $userEmail = $_SESSION['user'];
 
-    $sql = "INSERT INTO `e_order` (`o_user_email`, `o_place`, `o_pincode`, `o_proper_address`, `o_longitude`, `o_latitude`, `o_payment_type`, `o_payment_status`, `o_order_status`, `o_total_price`) VALUES ('$userEmail', '$place', '$pincode', '$address', '$longitude', '$latitude', '$paymentType', '$payment_status', 'pending', '$total_price')";
+    $sql = "INSERT INTO `e_order` (`o_user_email`, `o_place`, `o_pincode`, `o_proper_address`, `o_longitude`, `o_latitude`, `o_payment_type`, `o_payment_status`, `payment_id`, `payment_request_id`, `o_order_status`, `o_total_price`) VALUES ('$userEmail', '$place', '$pincode', '$address', '$longitude', '$latitude', '$paymentType', '$payment_status', '', '','pending', '$total_price')";
     $result = mysqli_query($conn, $sql);
     if (!$result) {
         global $insertFail;
@@ -74,64 +76,60 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             } else {
                 // Payment gateway starts here
 
-                $MERCHANT_KEY = "gtKFFx";
-                $SALT = "eCwWELxi";
-                $hash_string = '';
-                //$PAYU_BASE_URL = "https://secure.payu.in";
-                $PAYU_BASE_URL = "https://test.payu.in";
-                $action = '';
-                $posted = array();
-                if (!empty($_POST)) {
-                    foreach ($_POST as $key => $value) {
-                        $posted[$key] = $value;
-                    }
-                }
-                $formError = 0;
-                $txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
-                $posted['txnid'] = $txnid;
-                $posted['amount'] = 100;
-                $posted['firstname'] = "Vishal Gupta";
-                $posted['email'] = "phpvishal@gmail.com";
-                $posted['phone'] = "9999999999";
-                $posted['productinfo'] = "productinfo";
-                $posted['key'] = $MERCHANT_KEY;
-                $hash = '';
-                $hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
-                if (empty($posted['hash']) && sizeof($posted) > 0) {
-                    if (
-                        empty($posted['key'])
-                        || empty($posted['txnid'])
-                        || empty($posted['amount'])
-                        || empty($posted['firstname'])
-                        || empty($posted['email'])
-                        || empty($posted['phone'])
-                        || empty($posted['productinfo'])
+                $userDetail = mysqli_query($conn, "SELECT * FROM e_users WHERE u_email = '$userEmail'");
 
-                    ) {
-                        $formError = 1;
-                    } else {
-                        $hashVarsSeq = explode('|', $hashSequence);
-                        foreach ($hashVarsSeq as $hash_var) {
-                            $hash_string .= isset($posted[$hash_var]) ? $posted[$hash_var] : '';
-                            $hash_string .= '|';
+                if ($userDetail) {
+                    $row = mysqli_fetch_assoc($userDetail);
+
+                    $ch = curl_init();
+
+                    curl_setopt($ch, CURLOPT_URL, 'https://test.instamojo.com/api/1.1/payment-requests/');
+                    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+                    curl_setopt(
+                        $ch,
+                        CURLOPT_HTTPHEADER,
+                        array(
+                            "X-Api-Key:$api_key",
+                            "X-Auth-Token:$auth_token"
+                        )
+                    );
+                    $payload = array(
+                        'purpose' => 'Trendzye order',
+                        'amount' => $total_price,
+                        'phone' => $row["u_phone"],
+                        'buyer_name' => $row["u_name"],
+                        'redirect_url' => 'http://localhost/ecommerce/verifyPayment.php',
+                        'send_email' => true,
+                        // 'webhook' => 'http://XXXX/webhook',
+                        'send_sms' => true,
+                        'email' => $userEmail,
+                        'allow_repeated_payments' => false
+                    );
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
+                    $response = curl_exec($ch);
+                    curl_close($ch);
+
+                    $response = json_decode($response);
+                    if ($response && $response->success === true) {
+                        $payId = $response->payment_request->id;
+                        $update_order = mysqli_query($conn, "UPDATE `e_order` SET `payment_request_id` = '$payId' WHERE `e_order`.`o_id` = $order_id");
+                        if ($update_order) {
+                            header("location:" . $response->payment_request->longurl);
+                        } else {
+                            header("location: thankyou.php");
                         }
-                        $hash_string .= $SALT;
-                        $hash = strtolower(hash('sha512', $hash_string));
-                        $action = $PAYU_BASE_URL . '/_payment';
+                        die();
+                    } else {
+                        header("location: thankyou.php");
+                        die();
                     }
-                } elseif (!empty($posted['hash'])) {
-                    $hash = $posted['hash'];
-                    $action = $PAYU_BASE_URL . '/_payment';
+                    // gateway ends here 
+                } else {
+                    echo "Unable to find user";
                 }
-
-
-                $formHtml = '<form method="post" name="payuForm" id="payuForm" action="' . $action . '"><input type="hidden" name="key" value="' . $MERCHANT_KEY . '" /><input type="hidden" name="hash" value="' . $hash . '"/><input type="hidden" name="txnid" value="' . $posted['txnid'] . '" /><input name="amount" type="hidden" value="' . $posted['amount'] . '" /><input type="hidden" name="firstname" id="firstname" value="' . $posted['firstname'] . '" /><input type="hidden" name="email" id="email" value="' . $posted['email'] . '" /><input type="hidden" name="phone" value="' . $posted['phone'] . '" /><textarea name="productinfo" style="display:none;">' . $posted['productinfo'] . '</textarea><input type="hidden" name="surl" value="http://91weblessons.com/payu/payment_complete.php" /><input type="hidden" name="furl" value="http://91weblessons.com/payu/payment_fail.php"/><input type="submit" style="display:none;"/></form>';
-                echo $formHtml;
-                echo '<script>document.getElementById("payuForm").submit();</script>';
-
-
-
-                // gateway ends here 
             }
         }
     }

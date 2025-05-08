@@ -44,18 +44,26 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                     $row = mysqli_fetch_assoc($getImg);
                     $img = $row['m_img'];
                     if (unlink('../../img/mainCatImages/' . $img)) {
-                        global $setName;
-                        $factname = $setName . "." . $photoExt;
-                        $fpath = '../../img/mainCatImages/' . $factname;
-                        move_uploaded_file($photoTmp, $fpath);
 
-                        $updateCat = mysqli_query($conn, "UPDATE `main_categories` SET `m_name` = '$setName', `m_img` = '$factname' WHERE `main_categories`.`m_id` = $cat_id");
-                        if (!$updateCat) {
-                            $update = true;
-                        }else {
-                            global $success;
-                            $success = true;
+                        $fileNam = stripslashes($_POST['updateCatName']);
+                        $fileNam = str_replace('"', '', $fileNam);
+                        $fileNam = str_replace("'", '', $fileNam);
+                        
+                        $factname = $fileNam . "." . $photoExt;
+                        $fpath = '../../img/mainCatImages/' . $factname;
+
+                        if (move_uploaded_file($photoTmp, $fpath)) {
+                            $updateCat = mysqli_query($conn, "UPDATE `main_categories` SET `m_name` = '$setName', `m_img` = '$factname' WHERE `main_categories`.`m_id` = $cat_id");
+                            if (!$updateCat) {
+                                $update = true;
+                            }else {
+                                global $success;
+                                $success = true;
+                            }
+                        } else {
+                            echo("Failed to upload file");
                         }
+
                     } else {
                         $imgDel = true;
                     }
@@ -108,17 +116,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 <body class="body-clr">
 
-
-
-
-
     <div class="box">
         <img hidden id="hamburger" onclick="come()" src="../../img/Hamburger.png" alt="">
         <a class="btn subCats" id="subCategories" href="../subCategories.php">Sub Categories</a>
         <a class="btn subCats addCat" id="addCategories" href="../addcategory.php">Add</a>
         <ul class="nav">
             <li><img id="cross" onclick="go()" src="../../img/Cross.png" alt=""></li>
-            <li><a class="prItems" style="background-color: #FFC300 !important;" id="categories" href="../categories.php">Categories</a></li>
+            <li><a class="prItems" style="background-color: #FFC300 !important;" id="categories" href="../index.php">Categories</a></li>
             <li><a class="prItems" id="products" href="../products.php">Products</a></li>
             <li><a class="prItems" id="order" href="../Order.php">Orders</a></li>
             <li><a class="prItems" id="users" href="../users.php">Users</a></li>
@@ -173,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             <?php global $success;
             if ($success) { ?>
                 <p class="notify notify-photo">updation successfull!</p>
-                <a href="../categories.php" class="t-center">go back</a>
+                <a href="../index.php" class="t-center">go back</a>
             <?php } ?>
         </form>
     </div>
